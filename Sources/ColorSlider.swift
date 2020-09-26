@@ -101,6 +101,10 @@ public class ColorSlider: UIControl {
 			sendActions(for: .valueChanged)
 		}
 	}
+
+    public enum ColorScheme {
+        case colors, highlights(color: UIColor)
+    }
 	
 	/// The background gradient view.
 	public let gradientView: GradientView
@@ -134,16 +138,16 @@ public class ColorSlider: UIControl {
 		
 		// Create the preview view
 		let previewView = DefaultPreviewView(side: side)
-		self.init(orientation: orientation, previewView: previewView)
+        self.init(orientation: orientation, previewView: previewView, colorScheme: .colors)
 	}
 	
 	/// - parameter orientation: The orientation of the ColorSlider.
 	/// - parameter previewView: An optional preview view that stays anchored to the slider. See ColorSliderPreviewing.
-	required public init(orientation: Orientation, previewView: PreviewView?) {
+    required public init(orientation: Orientation, previewView: PreviewView?, colorScheme: ColorScheme) {
 		self.orientation = orientation
 		self.previewView = previewView
 		
-		gradientView = GradientView(orientation: orientation)
+        gradientView = GradientView(orientation: orientation, colorScheme: colorScheme)
 		internalColor = HSBColor(hue: 0, saturation: gradientView.saturation, brightness: 1)
 		
 		super.init(frame: .zero)

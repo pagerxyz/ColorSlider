@@ -80,9 +80,15 @@ public final class GradientView: UIView {
 	fileprivate let orientation: Orientation
 	
 	/// - parameter orientation: The orientation of the gradient view.
-	required public init(orientation: Orientation) {
+    required public init(orientation: Orientation, colorScheme: ColorSlider.ColorScheme) {
 		self.orientation = orientation
-		self.gradient = Gradient.colorSliderGradient(saturation: 1, whiteInset: 0.15, blackInset: 0.15)
+        switch colorScheme {
+        case .colors:
+            self.gradient = Gradient.colorSliderGradient(saturation: 1, whiteInset: 0.15, blackInset: 0.15)
+        case .highlights:
+            self.gradient = Gradient.highlightSliderGradient(hue: 1, whiteInset: 0.15, blackInset: 0.15)
+        }
+
 		
 		super.init(frame: .zero)
 		
@@ -239,6 +245,28 @@ internal extension GradientView {
 }
 
 fileprivate extension Gradient {
+    static func highlightSliderGradient(hue: CGFloat, whiteInset: CGFloat, blackInset: CGFloat) -> Gradient {
+        // Values from 0 to 1 at intervals of 0.1
+        let values: [CGFloat] = [0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.99]
+
+        // Use these values as the hues for non-white and non-black colors
+        let saturations = values
+        let nonGrayscaleColors = saturations.map({ (saturation) -> HSBColor in
+            return HSBColor(hue: hue, saturation: saturation, brightness: 1)
+        }).reversed()
+
+        // Black and white are at the top and bottom of the slider, insert colors in between
+        let spaceForNonGrayscaleColors = 1 - whiteInset - blackInset
+        let nonGrayscaleLocations = values.map { (location) -> CGFloat in
+            return whiteInset + (location * spaceForNonGrayscaleColors)
+        }
+
+        // Add black and white to locations and colors, set up gradient layer
+        let colors = [HSBColor.white] + nonGrayscaleColors + [HSBColor.black]
+        let locations = [0] + nonGrayscaleLocations + [1]
+        return Gradient(colors: colors, locations: locations)
+    }
+
 	static func colorSliderGradient(saturation: CGFloat, whiteInset: CGFloat, blackInset: CGFloat) -> Gradient {
 		// Values from 0 to 1 at intervals of 0.1
 		let values: [CGFloat] = [0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.99]
