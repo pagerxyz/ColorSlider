@@ -37,7 +37,7 @@ class DemoView: UIView {
 		
 	override init(frame: CGRect) {
 		// Set up ColorSlider and label
-		colorSlider = ColorSlider(orientation: .vertical, previewSide: .left)
+        colorSlider = ColorSlider(orientation: .vertical, previewView: nil, colorScheme: .highlights(color: .red))
 		label = UILabel()
 		
 		super.init(frame: frame)

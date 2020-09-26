@@ -50,22 +50,38 @@ public final class GradientView: UIView {
 			gradient = Gradient.colorSliderGradient(saturation: saturation, whiteInset: whiteInset, blackInset: blackInset)
 		}
 	}
+
+    public var hue: CGFloat = 1 {
+        didSet {
+            gradient = Gradient.highlightSliderGradient(hue: hue, whiteInset: whiteInset, blackInset: blackInset)
+        }
+    }
 	
 	/// The percent of space at the beginning (top for orientation `.vertical` and left for orientation `.horizontal`) end of the slider reserved for the color white.
 	/// Defaults to `0.15`.
-	public var whiteInset: CGFloat = 0.15 {
-		didSet {
-			gradient = Gradient.colorSliderGradient(saturation: saturation, whiteInset: whiteInset, blackInset: blackInset)
-		}
-	}
-	
-	/// The percent of space at the end (bottom for orientation `.vertical` and right for orientation `.horizontal`) end of the slider reserved for the color black.
-	/// Defaults to `0.15`.
-	public var blackInset: CGFloat = 0.15 {
-		didSet {
-			gradient = Gradient.colorSliderGradient(saturation: saturation, whiteInset: whiteInset, blackInset: blackInset)
-		}
-	}
+    public var whiteInset: CGFloat = 0.15 {
+        didSet {
+            switch colorScheme {
+            case .colors:
+                gradient = Gradient.colorSliderGradient(saturation: saturation, whiteInset: whiteInset, blackInset: blackInset)
+            case .highlights:
+                gradient = Gradient.highlightSliderGradient(hue: hue, whiteInset: whiteInset, blackInset: blackInset)
+            }
+        }
+    }
+
+    /// The percent of space at the end (bottom for orientation `.vertical` and right for orientation `.horizontal`) end of the slider reserved for the color black.
+    /// Defaults to `0.15`.
+    public var blackInset: CGFloat = 0.15 {
+        didSet {
+            switch colorScheme {
+            case .colors:
+                gradient = Gradient.colorSliderGradient(saturation: saturation, whiteInset: whiteInset, blackInset: blackInset)
+            case .highlights:
+                gradient = Gradient.highlightSliderGradient(hue: hue, whiteInset: whiteInset, blackInset: blackInset)
+            }
+        }
+    }
 
 	/// :nodoc:
 	/// The internal gradient used to draw the view.
@@ -78,15 +94,19 @@ public final class GradientView: UIView {
 	/// :nodoc:
 	/// The orientation of the gradient view. This is always equal to the value of `orientation` in the corresponding `ColorSlider` instance.
 	fileprivate let orientation: Orientation
+
+    fileprivate let colorScheme: ColorSlider.ColorScheme
 	
 	/// - parameter orientation: The orientation of the gradient view.
     required public init(orientation: Orientation, colorScheme: ColorSlider.ColorScheme) {
 		self.orientation = orientation
+        self.colorScheme = colorScheme
         switch colorScheme {
         case .colors:
             self.gradient = Gradient.colorSliderGradient(saturation: 1, whiteInset: 0.15, blackInset: 0.15)
-        case .highlights:
-            self.gradient = Gradient.highlightSliderGradient(hue: 1, whiteInset: 0.15, blackInset: 0.15)
+        case let .highlights(color):
+            let hsbColor = HSBColor(color: color)
+            self.gradient = Gradient.highlightSliderGradient(hue: hsbColor.hue, whiteInset: 0.15, blackInset: 0.15)
         }
 
 		
