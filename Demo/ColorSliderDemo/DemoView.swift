@@ -37,7 +37,9 @@ class DemoView: UIView {
 		
 	override init(frame: CGRect) {
 		// Set up ColorSlider and label
-        colorSlider = ColorSlider(orientation: .vertical, previewView: nil, colorScheme: .highlights(color: .red))
+        colorSlider = ColorSlider(orientation: .horizontal, previewView: nil, colorScheme: .highlights(color: .red))
+        colorSlider.gradientView.whiteInset = 0
+        colorSlider.gradientView.blackInset = 0
 		label = UILabel()
 		
 		super.init(frame: frame)
@@ -108,13 +110,13 @@ class DemoView: UIView {
 		NSLayoutConstraint.activate([
 			colorSlider.centerXAnchor.constraint(equalTo: centerXAnchor),
 			colorSlider.bottomAnchor.constraint(equalTo: centerYAnchor),
-			colorSlider.widthAnchor.constraint(equalToConstant: 15),
-			colorSlider.heightAnchor.constraint(equalToConstant: colorSliderHeight),
+			colorSlider.widthAnchor.constraint(equalToConstant: colorSliderHeight),
+			colorSlider.heightAnchor.constraint(equalToConstant: 15),
 			
 			label.leftAnchor.constraint(equalTo: leftAnchor, constant: inset),
 			label.rightAnchor.constraint(equalTo: rightAnchor, constant: -inset),
 			label.topAnchor.constraint(equalTo: colorSlider.bottomAnchor, constant: inset),
-			label.heightAnchor.constraint(equalToConstant: 100),
+			label.widthAnchor.constraint(equalToConstant: 100),
 		])
 	}
 	

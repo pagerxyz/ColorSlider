@@ -90,7 +90,8 @@ public class ColorSlider: UIControl {
 	/// The selected color.
 	public var color: UIColor {
 		get {
-			return UIColor(hsbColor: internalColor)
+            let hsbColor = HSBColor(hue: internalColor.hue, saturation: 1, brightness: 1)
+            return UIColor(hsbColor: hsbColor).withAlphaComponent(internalColor.saturation)
 		}
 		set {
 			internalColor = HSBColor(color: newValue)
