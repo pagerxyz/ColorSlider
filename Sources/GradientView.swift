@@ -107,9 +107,9 @@ public final class GradientView: UIView {
         case let .highlights(color):
             let hsbColor = HSBColor(color: color)
             self.gradient = Gradient.highlightSliderGradient(hue: hsbColor.hue, whiteInset: 0.15, blackInset: 0.15)
+            hue = hsbColor.hue
         }
 
-		
 		super.init(frame: .zero)
 		
 		backgroundColor = .clear

@@ -149,7 +149,13 @@ public class ColorSlider: UIControl {
 		self.previewView = previewView
 		
         gradientView = GradientView(orientation: orientation, colorScheme: colorScheme)
-		internalColor = HSBColor(hue: 0, saturation: gradientView.saturation, brightness: 1)
+        switch colorScheme {
+        case .colors:
+            internalColor = HSBColor(hue: 0, saturation: gradientView.saturation, brightness: 1)
+        case .highlights:
+            internalColor = HSBColor(hue: gradientView.hue, saturation: 1, brightness: 1)
+        }
+
 		
 		super.init(frame: .zero)
 		
