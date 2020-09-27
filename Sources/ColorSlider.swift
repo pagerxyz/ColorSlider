@@ -128,7 +128,7 @@ public class ColorSlider: UIControl {
 	
 	/// - parameter orientation: The orientation of the ColorSlider.
 	/// - parameter side: The side of the ColorSlider on which to anchor the live preview.
-	public convenience init(orientation: Orientation = .vertical, previewSide side: DefaultPreviewView.Side = .left) {
+    public convenience init(orientation: Orientation = .vertical, previewSide side: DefaultPreviewView.Side = .left, colorScheme: ColorScheme = .colors) {
 		// Check to ensure the side is valid for the given orientation
 		switch orientation {
 		case .horizontal:
@@ -139,7 +139,7 @@ public class ColorSlider: UIControl {
 		
 		// Create the preview view
 		let previewView = DefaultPreviewView(side: side)
-        self.init(orientation: orientation, previewView: previewView, colorScheme: .colors)
+        self.init(orientation: orientation, previewView: previewView, colorScheme: colorScheme)
 	}
 	
 	/// - parameter orientation: The orientation of the ColorSlider.
